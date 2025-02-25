@@ -2,10 +2,11 @@
 // where your node app starts
 
 // init project
+require('dotenv')config();
 var express = require('express');
 var app = express();
 
-const PORT = process.env.PORT || 3000;
+const port = process.env.PORT || 3000;
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
@@ -38,6 +39,6 @@ app.get("/api/:date?", function (req, res) {
 });
 
 // Listen on port set in environment variable or default to 3000
-app.listen(PORT, function () {
-  console.log('Your app is listening on port ' + PORT);
+app.listen(port, function () {
+  console.log('Your app is listening on port ' + port);
 });
