@@ -6,7 +6,7 @@ require('dotenv').config();
 var express = require('express');
 var app = express();
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // enable CORS (https://en.wikipedia.org/wiki/Cross-origin_resource_sharing)
 // so that your API is remotely testable by FCC 
@@ -25,14 +25,18 @@ app.get("/", function (req, res) {
 // your first API endpoint... 
 app.get("/api/:date?", function (req, res) {
   const date_string = req.params.date
-  let date = new Date(parseInt(date_string));
-  console.log(date)
-  console.log(date_string)
+  let date = new Date(date_string);
   if(date.toString() === 'Invalid Date'){
+   const newDate = new Date(parseInt(date_string));
+   res.json({
+    unix: newDate.getTime(),
+    utc: newDate.toUTCString()
+   })
+  } else if(date.toString() === 'Invalid Date'){
     res.json({ error: 'Invalid Date'})
   } else{
     res.json({
-      unix: date.getTime(),
+      unix: date.getTime(), 
       utc: date.toUTCString()
     })
   }
