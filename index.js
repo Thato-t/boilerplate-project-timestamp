@@ -25,7 +25,7 @@ app.get("/", function (req, res) {
 // your first API endpoint... 
 app.get("/api/:date?", function (req, res) {
   const date_string = req.params.date
-  let date = new Date(date_string);
+  let date = new Date(parseInt(date_string));
   console.log(date)
   console.log(date_string)
   if(date.toString() === 'Invalid Date'){
