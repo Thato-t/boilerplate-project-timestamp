@@ -26,6 +26,8 @@ app.get("/", function (req, res) {
 app.get("/api/:date?", function (req, res) {
   const date_string = req.params.date
   let date = new Date(date_string);
+  let currentDate = new Date()
+
   if(date.toString() === 'Invalid Date'){
    const newDate = new Date(parseInt(date_string));
    res.json({
@@ -34,12 +36,22 @@ app.get("/api/:date?", function (req, res) {
    })
   } else if(date.toString() === 'Invalid Date'){
     res.json({ error: 'Invalid Date'})
-  } else{
+  } else if(!date){
+    res.json({
+     unix: currentDate.getTime(),
+     utc: currentDate.toUTCString()
+    })
+ }  
+  
+  else{
     res.json({
       unix: date.getTime(), 
       utc: date.toUTCString()
     })
-  }
+  } 
+  
+ 
+  
 });
 
 // Listen on port set in environment variable or default to 3000
