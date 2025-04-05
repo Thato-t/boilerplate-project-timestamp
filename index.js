@@ -24,32 +24,30 @@ app.get("/", function (req, res) {
 
 // your first API endpoint... 
 app.get("/api/:date?", function (req, res) {
-  const date_string = req.params.date
-  let date = new Date(date_string);
-  let currentDate = new Date()
+    let { date } = req.params;
 
-  if(!date){
-    res.json({
-     unix: currentDate.getTime(),
-     utc: currentDate.toUTCString()
-    })
-  }  else{
+  let dateObj;
 
-    if(!isNaN(date_string)){
-      const newDate = new Date(parseInt(date_string));
-      res.json({
-        unix: newDate.getTime(),
-        utc: newDate.toUTCString()
-      })
-    } else if(date.toString() === 'Invalid Date'){
-      res.json({ error: 'Invalid Date'})
-    } else{
-      res.json({
-        unix: date.getTime(), 
-        utc: date.toUTCString()
-      })
+  // If no date param is provided, use current time
+  if (!date) {
+    dateObj = new Date();
+  } else {
+    // Check if it's a unix timestamp (numeric string)
+    if (!isNaN(date)) {
+      date = parseInt(date); // Convert to number
     }
-  }  
+    dateObj = new Date(date);
+  }
+
+  // Handle invalid date
+  if (dateObj.toString() === 'Invalid Date') {
+    return res.json({ error: "Invalid Date" });
+  }
+
+  res.json({
+    unix: dateObj.getTime(),
+    utc: dateObj.toUTCString()
+  });
 });
 
 // Listen on port set in environment variable or default to 3000
